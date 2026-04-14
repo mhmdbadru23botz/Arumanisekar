@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy World Girls Day - Anisekar Arum</title>
+    <title>Happy World Girls Day & Cepat Sembuh - Anisekar Arum</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,14 +11,39 @@
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(135deg, #ffe1e8 0%, #f3d4ff 100%);
             overflow-x: hidden;
+            margin: 0;
         }
         
         .title-font {
             font-family: 'Dancing Script', cursive;
         }
 
-        /* Animasi Hati Melayang */
-        .heart-bg {
+        /* --- Animasi Masuk (Entrance) --- */
+        .animate-fade-in-up {
+            animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Animasi Denyut Jantung Lembut untuk Bingkai --- */
+        .animate-soft-pulse {
+            animation: softPulse 3s infinite alternate;
+        }
+
+        @keyframes softPulse {
+            0% { box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.3); transform: scale(1); }
+            100% { box-shadow: 0 20px 35px -5px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
+        }
+
+        /* --- Latar Belakang Partikel (Hati & Emoji) --- */
+        .particle-bg {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -29,38 +54,51 @@
             z-index: 0;
         }
 
-        .heart {
+        .particle {
             position: absolute;
             bottom: -10%;
-            opacity: 0.5;
-            animation: floatUp 10s linear infinite;
+            opacity: 0;
+            animation: floatUp 12s linear infinite;
+            font-size: 1.5rem; /* Ukuran emoji melayang */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(0.5) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.6;
-            }
-            80% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-120vh) scale(1.2) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.7; }
+            85% { opacity: 0.7; }
+            100% { transform: translateY(-120vh) scale(1.2) rotate(360deg); opacity: 0; }
         }
 
+        /* --- Efek Teks Dinamis --- */
+        .quote-container {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quote-text {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .quote-hidden {
+            opacity: 0;
+            transform: translateY(-15px) scale(0.95);
+        }
+
+        /* --- Animasi Tombol Musik --- */
+        .spin-slow { animation: spin 4s linear infinite; }
+        .paused { animation-play-state: paused; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         /* Kustomisasi scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #fbcfe8;
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background-color: #fbcfe8; border-radius: 10px; }
         
         /* Kartu Glassmorphism */
         .glass-card {
@@ -70,34 +108,26 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Efek fade untuk kutipan dinamis */
-        #captionText {
-            transition: opacity 0.6s ease-in-out;
-        }
-
-        /* Animasi Tombol Musik */
-        .spin-slow {
-            animation: spin 4s linear infinite;
-        }
-        .paused {
-            animation-play-state: paused;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        /* Partikel Klik (Emoji Burst) */
+        .click-emoji {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 sm:p-8 relative">
 
-    <!-- Elemen Latar Belakang Animasi -->
-    <div class="heart-bg" id="hearts-container"></div>
+    <!-- Elemen Latar Belakang Animasi (Campuran Emoji & Hati) -->
+    <div class="particle-bg" id="particles-container"></div>
 
-    <!-- Kartu Utama -->
-    <div class="glass-card rounded-3xl shadow-2xl overflow-hidden max-w-md w-full relative z-10 p-8 text-center transition-all duration-500 hover:shadow-pink-200/50">
+    <!-- Kartu Utama dengan Animasi Masuk -->
+    <div class="glass-card rounded-3xl shadow-2xl overflow-hidden max-w-md w-full relative z-10 p-8 text-center animate-fade-in-up">
         
-        <!-- Elemen Dekoratif Atas -->
-        <div class="absolute top-0 right-0 p-4 opacity-30 text-pink-400">
+        <!-- Elemen Dekoratif Atas Berkedip -->
+        <div class="absolute top-0 right-0 p-4 opacity-30 text-pink-400 animate-pulse">
             <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
@@ -108,20 +138,20 @@
             Happy World <br> Girls Day 💖
         </h1>
         <p class="text-lg text-gray-600 mb-8 font-medium">
-            Untuk kamu, <span class="text-pink-600 font-bold bg-pink-100 px-2 py-1 rounded-lg">Anisekar Arum</span> ✨
+            Untuk kamu, <span class="text-pink-600 font-bold bg-pink-100 px-3 py-1 rounded-xl shadow-sm inline-block transform hover:scale-110 transition-transform">Anisekar Arum</span> ✨
         </p>
 
-        <!-- Bingkai Foto (Bisa diklik untuk mengganti gambar) -->
-        <div class="relative mx-auto w-64 h-64 mb-8 group cursor-pointer transition-transform duration-300 hover:scale-105 hover:-rotate-2" id="photo-container" title="Klik untuk mengganti foto">
+        <!-- Bingkai Foto dengan Efek Pulse (Bisa diklik) -->
+        <div class="relative mx-auto w-64 h-64 mb-8 group cursor-pointer transition-transform duration-300 hover:scale-105 hover:-rotate-3 animate-soft-pulse" id="photo-container" title="Klik untuk mengganti foto">
             <!-- Gaya Bingkai -->
-            <div class="photo-frame absolute inset-0 bg-white p-3 rounded-2xl shadow-lg border border-pink-100 flex flex-col z-10">
+            <div class="absolute inset-0 bg-white p-3 rounded-2xl shadow-lg border border-pink-200 flex flex-col z-10">
                 <!-- Preview Gambar -->
                 <img id="preview" src="https://l.top4top.io/p_3756rzz140.jpg" alt="Foto Anisekar Arum" class="w-full h-full object-cover rounded-xl shadow-inner">
             </div>
             
             <!-- Overlay saat di-hover -->
-            <div class="absolute inset-0 bg-pink-500/30 rounded-2xl z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm m-3">
-                <span class="text-white font-semibold flex items-center gap-2 bg-pink-500/80 px-4 py-2 rounded-full">
+            <div class="absolute inset-0 bg-pink-500/40 rounded-2xl z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm m-3">
+                <span class="text-white font-bold flex items-center gap-2 bg-pink-600/90 px-5 py-2.5 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Ganti Foto
                 </span>
@@ -131,44 +161,77 @@
             <input type="file" id="imageUpload" class="hidden" accept="image/*">
         </div>
 
-        <!-- Kotak Caption dengan Teks Dinamis -->
-        <div class="relative bg-pink-50/80 border border-pink-100 p-6 rounded-2xl mt-4 shadow-sm min-h-[100px] flex items-center justify-center">
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white rounded-full p-2 shadow-md text-pink-400">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+        <!-- Kotak Caption Dinamis dengan Animasi -->
+        <div class="relative bg-gradient-to-br from-pink-50 to-purple-50 border border-pink-100 p-6 rounded-2xl mt-4 shadow-md quote-container">
+            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white rounded-full p-2.5 shadow-lg text-pink-500 hover:scale-110 transition-transform">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
             </div>
-            <p class="caption text-gray-700 font-medium italic leading-relaxed text-md" id="captionText">
+            <p class="caption text-gray-800 font-medium italic leading-relaxed text-md quote-text" id="captionText">
                 "Cantik itu bukan soal wajah, tapi cara kamu tetap kuat walau dunia lagi ga baik 💕"
             </p>
         </div>
     </div>
 
     <!-- Tombol Pemutar Musik Mengambang -->
-    <button id="musicBtn" class="fixed bottom-6 right-6 z-50 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg shadow-pink-300/50 transition-transform hover:scale-110 focus:outline-none flex items-center justify-center group" title="Putar/Jeda Musik">
-        <!-- Ikon CD yang berputar -->
-        <svg id="musicIcon" class="w-7 h-7 spin-slow paused" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <button id="musicBtn" class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white p-4 rounded-full shadow-xl shadow-pink-300/50 transition-all hover:scale-110 focus:outline-none flex items-center justify-center group" title="Putar/Jeda Musik">
+        <!-- Ikon CD -->
+        <svg id="musicIcon" class="w-7 h-7 spin-slow paused" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
         </svg>
         <!-- Tooltip -->
-        <span class="absolute -top-10 right-0 bg-white text-pink-500 text-xs font-bold px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Play Music 🎵</span>
+        <span class="absolute -top-12 right-0 bg-gray-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Play Music 🎵</span>
     </button>
 
-    <!-- Elemen Audio Tersembunyi -->
+    <!-- Elemen Audio -->
     <audio id="bgMusic" loop>
         <source src="https://raw.githubusercontent.com/mhmdbadru23botz/Arumanisekar/main/ssstik.io_1776135041848.mp3" type="audio/mpeg">
-        Browser Anda tidak mendukung elemen audio.
     </audio>
 
     <script>
+        // --- Efek Emoji Meledak Saat Diklik (CLICK BURST ANIMATION) ---
+        document.addEventListener('click', function(e) {
+            // Hindari memunculkan terlalu banyak saat upload foto
+            if(e.target.closest('#photo-container')) return; 
+
+            const clickEmojis = ['💖', '✨', '🌸', '🦋', '🧸', '🥰'];
+            const burstCount = 5; // Jumlah emoji setiap klik
+
+            for (let i = 0; i < burstCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('click-emoji');
+                particle.innerText = clickEmojis[Math.floor(Math.random() * clickEmojis.length)];
+                
+                // Posisi awal persis di tempat klik
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                
+                document.body.appendChild(particle);
+
+                // Hitung arah ledakan acak
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 40 + Math.random() * 60; // Jarak tembak
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 30; // Sedikit ke atas
+
+                // Trigger animasi frame berikutnya
+                requestAnimationFrame(() => {
+                    particle.style.transform = `translate(${tx}px, ${ty}px) scale(${1.5 + Math.random()})`;
+                    particle.style.opacity = '0';
+                });
+
+                // Hapus elemen setelah animasi selesai
+                setTimeout(() => particle.remove(), 800);
+            }
+        });
+
         // --- Logika Upload Gambar ---
         const photoContainer = document.getElementById('photo-container');
         const imageUpload = document.getElementById('imageUpload');
         const preview = document.getElementById('preview');
 
-        photoContainer.addEventListener('click', () => {
-            imageUpload.click();
-        });
+        photoContainer.addEventListener('click', () => imageUpload.click());
 
         imageUpload.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -176,16 +239,16 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
-                    photoContainer.classList.remove('hover:-rotate-2', 'hover:scale-105');
-                    setTimeout(() => {
-                        photoContainer.classList.add('hover:-rotate-2', 'hover:scale-105');
-                    }, 100);
+                    // Reset animasi denyut sebentar agar terlihat interaktif
+                    photoContainer.classList.remove('animate-soft-pulse', 'hover:-rotate-3');
+                    void photoContainer.offsetWidth; // Trigger reflow
+                    setTimeout(() => photoContainer.classList.add('animate-soft-pulse', 'hover:-rotate-3'), 50);
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // --- Generator Kutipan Dinamis (Campuran Girls Day & Get Well Soon) ---
+        // --- Generator Teks Dinamis dengan Animasi Smooth ---
         const quotes = [
             '"Cantik itu bukan soal wajah, tapi cara kamu tetap kuat walau dunia lagi ga baik 💕"',
             '"Minum obatnya yang teratur ya cantik, biar kita bisa main lagi 🥺💖"',
@@ -200,42 +263,52 @@
         const captionTextElement = document.getElementById('captionText');
 
         function changeQuote() {
-            captionTextElement.style.opacity = 0;
+            // Animasi keluar (geser atas dan pudar)
+            captionTextElement.classList.add('quote-hidden');
+            
             setTimeout(() => {
+                // Ganti teks
                 currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
                 captionTextElement.innerText = quotes[currentQuoteIndex];
-                captionTextElement.style.opacity = 1;
-            }, 600);
+                
+                // Animasi masuk kembali
+                captionTextElement.classList.remove('quote-hidden');
+            }, 500); // Waktu jeda pas dengan durasi CSS transition
         }
-        // Ganti pesan setiap 5.5 detik
         setInterval(changeQuote, 5500);
 
-        // --- Generator Latar Belakang Hati Melayang ---
-        function createHearts() {
-            const container = document.getElementById('hearts-container');
+        // --- Generator Latar Belakang Campuran Hati & Emoji ---
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const floatingEmojis = ['💖', '✨', '🌸', '🦋', '🤍'];
             const heartColors = ['text-pink-300', 'text-pink-200', 'text-purple-200', 'text-rose-300'];
             
-            for (let i = 0; i < 15; i++) {
-                let heart = document.createElement('div');
-                heart.classList.add('heart');
+            for (let i = 0; i < 20; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
                 
                 let leftPos = Math.random() * 100;
-                let animDuration = 8 + Math.random() * 7;
+                let animDuration = 10 + Math.random() * 10;
                 let animDelay = Math.random() * 10;
-                let colorClass = heartColors[Math.floor(Math.random() * heartColors.length)];
                 
-                heart.style.left = leftPos + '%';
-                heart.style.animationDuration = animDuration + 's';
-                heart.style.animationDelay = animDelay + 's';
+                particle.style.left = leftPos + '%';
+                particle.style.animationDuration = animDuration + 's';
+                particle.style.animationDelay = animDelay + 's';
                 
-                heart.innerHTML = `<svg class="w-6 h-6 ${colorClass}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                // 50% bentuk SVG Hati, 50% Emoji acak
+                if(Math.random() > 0.5) {
+                    let colorClass = heartColors[Math.floor(Math.random() * heartColors.length)];
+                    particle.innerHTML = `<svg class="w-6 h-6 ${colorClass}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                } else {
+                    particle.innerText = floatingEmojis[Math.floor(Math.random() * floatingEmojis.length)];
+                }
                 
-                container.appendChild(heart);
+                container.appendChild(particle);
             }
         }
-        createHearts();
+        createParticles();
 
-        // --- Logika Pemutar Musik ---
+        // --- Logika Pemutar Musik Tahan Banting ---
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = document.getElementById('musicIcon');
@@ -243,26 +316,28 @@
 
         bgMusic.volume = 0.6;
 
-        musicBtn.addEventListener('click', () => {
+        function toggleMusic() {
             if (isPlaying) {
                 bgMusic.pause();
                 musicIcon.classList.add('paused');
             } else {
-                bgMusic.play().catch(e => console.log("Audio play failed:", e));
-                musicIcon.classList.remove('paused');
+                let playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        musicIcon.classList.remove('paused');
+                    }).catch(error => {
+                        console.log("Browser memblokir pemutaran otomatis.", error);
+                    });
+                }
             }
             isPlaying = !isPlaying;
-        });
+        }
+
+        musicBtn.addEventListener('click', toggleMusic);
         
+        // Auto-play pemicu interaksi pertama
         document.body.addEventListener('click', function initAudio() {
-            if (!isPlaying) {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    musicIcon.classList.remove('paused');
-                }).catch(e => {
-                    console.log("Auto-play prevented by browser policy");
-                });
-            }
+            if (!isPlaying) { toggleMusic(); }
             document.body.removeEventListener('click', initAudio);
         }, { once: true });
     </script>
