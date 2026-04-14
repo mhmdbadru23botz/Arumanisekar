@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cepat Sembuh Sayang - Anisekar Arum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffe1e8 0%, #f3d4ff 100%);
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Floating Hearts Animation */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -10%;
+            opacity: 0.5;
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-120vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #fbcfe8;
+            border-radius: 10px;
+        }
+        
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Fade effect for dynamic quotes */
+        #captionText {
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        /* Music Button Animation */
+        .spin-slow {
+            animation: spin 4s linear infinite;
+        }
+        .paused {
+            animation-play-state: paused;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-8 relative">
+
+    <!-- Background Animation Elements -->
+    <div class="heart-bg" id="hearts-container"></div>
+
+    <!-- Main Card -->
+    <div class="glass-card rounded-3xl shadow-2xl overflow-hidden max-w-md w-full relative z-10 p-8 text-center transition-all duration-500 hover:shadow-pink-200/50">
+        
+        <!-- Decorative Header Element -->
+        <div class="absolute top-0 right-0 p-4 opacity-30 text-pink-400">
+            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
+        <!-- Headings -->
+        <h1 class="title-font text-5xl text-pink-500 font-bold mb-2 leading-tight drop-shadow-sm">
+            Cepat Sembuh <br> Sayang 🥺💖
+        </h1>
+        <p class="text-lg text-gray-600 mb-8 font-medium">
+            Untuk kamu, <span class="text-pink-600 font-bold bg-pink-100 px-2 py-1 rounded-lg">Anisekar Arum</span> ✨
+        </p>
+
+        <!-- Photo Frame (Clickable to change image) -->
+        <div class="relative mx-auto w-64 h-64 mb-8 group cursor-pointer transition-transform duration-300 hover:scale-105 hover:-rotate-2" id="photo-container" title="Klik untuk mengganti foto">
+            <!-- Frame Styling -->
+            <div class="photo-frame absolute inset-0 bg-white p-3 rounded-2xl shadow-lg border border-pink-100 flex flex-col z-10">
+                <!-- Image Preview -->
+                <img id="preview" src="https://l.top4top.io/p_3756rzz140.jpg" alt="Foto Anisekar Arum" class="w-full h-full object-cover rounded-xl shadow-inner">
+            </div>
+            
+            <!-- Hover Overlay -->
+            <div class="absolute inset-0 bg-pink-500/30 rounded-2xl z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm m-3">
+                <span class="text-white font-semibold flex items-center gap-2 bg-pink-500/80 px-4 py-2 rounded-full">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Ganti Foto
+                </span>
+            </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="imageUpload" class="hidden" accept="image/*">
+        </div>
+
+        <!-- Caption Box with Dynamic Text -->
+        <div class="relative bg-pink-50/80 border border-pink-100 p-6 rounded-2xl mt-4 shadow-sm min-h-[100px] flex items-center justify-center">
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white rounded-full p-2 shadow-md text-pink-400">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <p class="caption text-gray-700 font-medium italic leading-relaxed text-md" id="captionText">
+                "Cepat sembuh ya sayang, aku kangen senyum ceriamu 💕"
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating Music Player Button -->
+    <button id="musicBtn" class="fixed bottom-6 right-6 z-50 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg shadow-pink-300/50 transition-transform hover:scale-110 focus:outline-none flex items-center justify-center group" title="Play/Pause Music">
+        <!-- CD Icon that spins -->
+        <svg id="musicIcon" class="w-7 h-7 spin-slow paused" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+        </svg>
+        <!-- Tooltip -->
+        <span class="absolute -top-10 right-0 bg-white text-pink-500 text-xs font-bold px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Play Music 🎵</span>
+    </button>
+
+    <!-- Hidden Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="https://raw.githubusercontent.com/mhmdbadru23botz/Arumanisekar/main/ssstik.io_1776135041848.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <script>
+        // --- Image Upload Logic ---
+        const photoContainer = document.getElementById('photo-container');
+        const imageUpload = document.getElementById('imageUpload');
+        const preview = document.getElementById('preview');
+
+        photoContainer.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        imageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    photoContainer.classList.remove('hover:-rotate-2', 'hover:scale-105');
+                    setTimeout(() => {
+                        photoContainer.classList.add('hover:-rotate-2', 'hover:scale-105');
+                    }, 100);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- Dynamic Quotes Generator (GET WELL SOON THEME) ---
+        const quotes = [
+            '"Cepat sembuh ya sayang, aku kangen senyum ceriamu 💕"',
+            '"Sakitnya jangan lama-lama ya, dunia butuh tawa manismu ✨"',
+            '"Minum obatnya yang teratur ya cantik, biar kita bisa main lagi 🥺💖"',
+            '"Aku kirim peluk dan doa dari jauh biar kamu cepat sehat 🧸🌸"',
+            '"Jangan lupa istirahat yang cukup cantikku, I love you 🦋"',
+            '"Kamu pasti kuat kok, cepat sehat kembali ya kesayanganku 🌷"'
+        ];
+
+        let currentQuoteIndex = 0;
+        const captionTextElement = document.getElementById('captionText');
+
+        function changeQuote() {
+            captionTextElement.style.opacity = 0;
+            setTimeout(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                captionTextElement.innerText = quotes[currentQuoteIndex];
+                captionTextElement.style.opacity = 1;
+            }, 600);
+        }
+        setInterval(changeQuote, 5500);
+
+        // --- Floating Hearts Background Generator ---
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartColors = ['text-pink-300', 'text-pink-200', 'text-purple-200', 'text-rose-300'];
+            
+            for (let i = 0; i < 15; i++) {
+                let heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                let leftPos = Math.random() * 100;
+                let animDuration = 8 + Math.random() * 7;
+                let animDelay = Math.random() * 10;
+                let colorClass = heartColors[Math.floor(Math.random() * heartColors.length)];
+                
+                heart.style.left = leftPos + '%';
+                heart.style.animationDuration = animDuration + 's';
+                heart.style.animationDelay = animDelay + 's';
+                
+                heart.innerHTML = `<svg class="w-6 h-6 ${colorClass}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // --- Music Player Logic ---
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        bgMusic.volume = 0.6;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.add('paused');
+            } else {
+                bgMusic.play().catch(e => console.log("Audio play failed:", e));
+                musicIcon.classList.remove('paused');
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        document.body.addEventListener('click', function initAudio() {
+            if (!isPlaying) {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.classList.remove('paused');
+                }).catch(e => {
+                    console.log("Auto-play prevented by browser policy");
+                });
+            }
+            document.body.removeEventListener('click', initAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>
